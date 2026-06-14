@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> FOCUSZEN — Enter Deep Focus. Escape Distraction.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --acid: #ccff00;
+            --purple: #7000ff;
+            --pink: #ff0099;
+            --black: #0a0a0a;
+            --white: #ffffff;
+            --border: 4px solid #0a0a0a;
+            --shadow: 6px 6px 0px #0a0a0a;
+            --shadow-sm: 4px 4px 0px #0a0a0a;
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --radius: 24px;
+            --radius-sm: 12px;
+            --radius-pill: 999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        body {
+            font-family: var(--font-body);
+            background: #f5f5f0;
+            color: var(--black);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        /* FLOATING PARTICLES CANVAS */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* STICKY NAV PILL */
+        .nav-pill {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--black);
+            border-radius: var(--radius-pill);
+            padding: 8px 8px 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s var(--bounce);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-pill:hover {
+            box-shadow: 8px 8px 0px #0a0a0a;
+            transform: translateX(-50%) translateY(-2px);
+        }
+        .nav-logo {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-logo .logo-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--acid);
+            border-radius: 50%;
+            border: 2px solid var(--black);
+            display: inline-block;
+            animation: pulse-dot 1.5s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.8);
+                background: var(--purple);
+            }
+        }
+        .nav-link {
+            text-decoration: none;
+            color: var(--black);
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: lowercase;
+            padding: 8px 14px;
+            border-radius: var(--radius-pill);
+            transition: all 0.25s var(--bounce);
+            white-space: nowrap;
+            letter-spacing: -0.2px;
+            font-family: var(--font-head);
+        }
+        .nav-link:hover {
+            background: var(--acid);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav-cta {
+            background: var(--pink);
+            color: #fff;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-size: 0.78rem;
+            border: 2px solid var(--black);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s var(--bounce);
+            white-space: nowrap;
+            font-family: var(--font-head);
+            cursor: pointer;
+        }
+        .nav-cta:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 8px 8px 0px #0a0a0a;
+            background: #ff1a9e;
+        }
+        .nav-admin-link {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: var(--radius-pill);
+            transition: all 0.3s;
+            font-family: var(--font-head);
+            text-decoration: none;
+            color: var(--black);
+        }
+        .nav-admin-link:hover {
+            opacity: 1;
+            background: #eee;
+        }
+
+        /* SECTIONS */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 24px;
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            background: var(--acid);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: center;
+        }
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 3px solid var(--black);
+            border-radius: var(--radius-pill);
+            padding: 8px 16px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            font-family: var(--font-head);
+            box-shadow: var(--shadow-sm);
+            width: fit-content;
+            animation: floatBadge 3s ease-in-out infinite;
+        }
+        @keyframes floatBadge {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+        .hero-badge .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--pink);
+            border-radius: 50%;
+            animation: pulse-dot 1s infinite;
+        }
+        .hero-headline {
+            font-family: var(--font-head);
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #7000ff, #ff0099);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
+        }
+        .hero-sub {
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            font-weight: 500;
+            line-height: 1.6;
+            max-width: 480px;
+            font-family: var(--font-body);
+        }
+        .hero-btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-brutal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            font-family: var(--font-head);
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow);
+            transition: all 0.3s var(--bounce);
+            text-decoration: none;
+            letter-spacing: -0.3px;
+            background: #fff;
+            color: var(--black);
+        }
+        .btn-brutal:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 10px 10px 0px #0a0a0a;
+        }
+        .btn-brutal.primary {
+            background: var(--purple);
+            color: #fff;
+            border-color: #0a0a0a;
+        }
+        .btn-brutal.primary:hover {
+            background: #5a00d1;
+        }
+        .btn-brutal.accent {
+            background: var(--pink);
+            color: #fff;
+            border-color: #0a0a0a;
+        }
+        .btn-brutal.accent:hover {
+            background: #e00080;
+        }
+
+        /* PHONE MOCKUP */
+        .phone-mockup {
+            position: relative;
+            width: 280px;
+            height: 560px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            border: 6px solid #0a0a0a;
+            box-shadow: 16px 16px 0px #0a0a0a;
+            overflow: hidden;
+            transform: rotate(3deg);
+            transition: all 0.5s var(--bounce);
+            margin: 0 auto;
+        }
+        .phone-mockup:hover {
+            transform: rotate(0deg) translateY(-8px);
+            box-shadow: 20px 20px 0px #0a0a0a;
+        }
+        .phone-screen {
+            background: #0d0d0d;
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: hidden;
+        }
+        .phone-notch {
+            width: 60px;
+            height: 6px;
+            background: #333;
+            border-radius: 20px;
+            margin: 0 auto 8px;
+        }
+        .phone-widget {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.7rem;
+            color: #ccc;
+        }
+        .phone-timer {
+            text-align: center;
+            font-family: var(--font-head);
+        }
+        .phone-timer .timer-ring {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 4px solid var(--acid);
+            margin: 8px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
+            animation: ringPulse 2s infinite;
+        }
+        @keyframes ringPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(204, 255, 0, 0.7);
+            }
+        }
+        .phone-music-bar {
+            display: flex;
+            gap: 4px;
+            align-items: flex-end;
+            height: 20px;
+        }
+        .phone-music-bar span {
+            flex: 1;
+            background: var(--purple);
+            border-radius: 4px;
+            animation: musicBar 0.8s infinite alternate;
+            min-width: 3px;
+        }
+        @keyframes musicBar {
+            to {
+                height: 100%;
+                background: var(--pink);
+            }
+        }
+        .phone-quote {
+            font-size: 0.65rem;
+            color: #aaa;
+            text-align: center;
+            font-style: italic;
+        }
+        .phone-badge-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .phone-badge-row .pb {
+            background: var(--acid);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            font-family: var(--font-head);
+        }
+
+        /* FLOATING STICKERS */
+        .sticker {
+            position: absolute;
+            background: #fff;
+            border: 3px solid var(--black);
+            border-radius: var(--radius-sm);
+            padding: 8px 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow-sm);
+            z-index: 5;
+            animation: floatSticker 4s ease-in-out infinite;
+            font-family: var(--font-head);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        @keyframes floatSticker {
+            0%,
+            100% {
+                transform: translateY(0) rotate(var(--rot, 0deg));
+            }
+            50% {
+                transform: translateY(-22px) rotate(calc(var(--rot, 0deg) + 3deg));
+            }
+        }
+        .sticker.s1 {
+            top: 10%;
+            right: 5%;
+            --rot: -4deg;
+            animation-delay: 0s;
+        }
+        .sticker.s2 {
+            top: 55%;
+            right: 2%;
+            --rot: 3deg;
+            animation-delay: 1.2s;
+        }
+        .sticker.s3 {
+            top: 30%;
+            left: 2%;
+            --rot: -2deg;
+            animation-delay: 2s;
+        }
+        .sticker.s4 {
+            bottom: 15%;
+            left: 8%;
+            --rot: 5deg;
+            animation-delay: 0.6s;
+        }
+        .sticker.s5 {
+            top: 70%;
+            right: 10%;
+            --rot: -5deg;
+            animation-delay: 2.8s;
+        }
+
+        /* SLANTED MARQUEE */
+        .marquee-section {
+            background: var(--black);
+            padding: 30px 0;
+            overflow: hidden;
+            border-top: 4px solid #fff;
+            border-bottom: 4px solid #fff;
+            transform: rotate(-1deg);
+            margin: -20px 0;
+            position: relative;
+            z-index: 2;
+        }
+        .marquee-track {
+            display: flex;
+            gap: 30px;
+            animation: marqueeScroll 20s linear infinite;
+            white-space: nowrap;
+        }
+        @keyframes marqueeScroll {
+            to {
+                transform: translateX(-50%);
+            }
+        }
+        .marquee-item {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 0 10px;
+        }
+        .marquee-item.dot {
+            color: var(--acid);
+        }
+
+        /* BENTO GRID */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .bento-card {
+            background: #fff;
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow);
+            transition: all 0.35s var(--bounce);
+            position: relative;
+            overflow: hidden;
+        }
+        .bento-card:hover {
+            transform: translateY(-6px) rotate(var(--tilt, 0deg));
+            box-shadow: 10px 10px 0px #0a0a0a;
+        }
+        .bento-card.tilt-r {
+            --tilt: 1.5deg;
+        }
+        .bento-card.tilt-l {
+            --tilt: -1.5deg;
+        }
+        .bento-card.span-2 {
+            grid-column: span 2;
+        }
+        .bento-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .bento-card h3 {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .bento-card p {
+            font-size: 0.9rem;
+            color: #444;
+            font-family: var(--font-body);
+            line-height: 1.5;
+        }
+        .bento-tag {
+            display: inline-block;
+            background: var(--acid);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: var(--font-head);
+            margin-top: 10px;
+            border: 2px solid var(--black);
+        }
+        .bento-card.accent-purple {
+            background: #f5edff;
+        }
+        .bento-card.accent-pink {
+            background: #fff0f8;
+        }
+        .bento-card.accent-acid {
+            background: #faffed;
+        }
+
+        /* TIMER DEMO IN CARD */
+        .timer-demo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .timer-demo-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 5px solid var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+        .timer-demo-controls {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .timer-chip {
+            padding: 8px 14px;
+            border-radius: var(--radius-pill);
+            border: 2px solid var(--black);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            font-family: var(--font-head);
+            background: #fff;
+            transition: all 0.2s;
+        }
+        .timer-chip.active {
+            background: var(--purple);
+            color: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+        .timer-chip:hover {
+            transform: scale(1.06);
+        }
+
+        /* MEDITATION BREATHING CIRCLE */
+        .breath-demo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--purple);
+            margin: 16px auto;
+            animation: breathe 6s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-family: var(--font-head);
+            font-size: 0.8rem;
+            border: 4px solid var(--black);
+            box-shadow: var(--shadow-sm);
+        }
+        @keyframes breathe {
+            0%,
+            100% {
+                transform: scale(1);
+                background: var(--purple);
+            }
+            50% {
+                transform: scale(1.5);
+                background: var(--pink);
+            }
+        }
+
+        /* FAQ */
+               .faq-section {
+            background: #fff;
+            border-top: 8px solid var(--black);
+            border-bottom: 8px solid var(--black);
+        }
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .faq-item {
+            border: 4px solid var(--black);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: #fff;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+        .faq-item:hover {
+            box-shadow: 8px 8px 0px #0a0a0a;
+        }
+        .faq-q {
+            padding: 18px 22px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: var(--font-head);
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            letter-spacing: -0.3px;
+        }
+        .faq-q .faq-arrow {
+            transition: all 0.4s var(--bounce);
+            font-size: 1.3rem;
+        }
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
+        }
+        .faq-a {
+            padding: 0 22px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s var(--bounce);
+            font-size: 0.9rem;
+            color: #444;
+            font-family: var(--font-body);
+            line-height: 1.6;
+        }
+        .faq-item.open .faq-a {
+            padding: 0 22px 18px;
+            max-height: 300px;
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            background: var(--pink);
+            text-align: center;
+            padding: 80px 24px;
+            position: relative;
+            overflow: hidden;
+            border-top: 8px solid var(--black);
+            border-bottom: 8px solid var(--black);
+        }
+        .cta-headline {
+            font-family: var(--font-head);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -2px;
+            line-height: 1;
+            text-shadow: 4px 4px 0px #0a0a0a;
+            position: relative;
+            z-index: 2;
+        }
+        .cta-sub {
+            color: #fff;
+            font-size: 1.1rem;
+            margin: 16px 0 24px;
+            font-weight: 500;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+        }
+        .cta-section .btn-brutal {
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            font-size: 1.1rem;
+            padding: 18px 36px;
+        }
+        .cta-bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+        .cta-bg-shape.shape1 {
+            width: 300px;
+            height: 300px;
+            top: -60px;
+            left: -60px;
+        }
+        .cta-bg-shape.shape2 {
+            width: 200px;
+            height: 200px;
+            bottom: -40px;
+            right: -30px;
+        }
+
+        /* FOOTER */
+        .footer-section {
+            background: #fff;
+            border-top: 8px solid var(--black);
+            padding: 40px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-bg-text {
+            position: absolute;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: clamp(4rem, 10vw, 10rem);
+            color: rgba(0, 0, 0, 0.03);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            pointer-events: none;
+            letter-spacing: 4px;
+        }
+        .footer-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: var(--font-head);
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: var(--purple);
+        }
+        .footer-copy {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* ADMIN PANEL OVERLAY */
+        .admin-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .admin-overlay.active {
+            display: flex;
+        }
+        .admin-panel {
+            background: #fff;
+            border: 6px solid var(--black);
+            border-radius: var(--radius);
+            box-shadow: 12px 12px 0px #0a0a0a;
+            width: 100%;
+            max-width: 750px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 32px;
+            position: relative;
+        }
+        .admin-panel h2 {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: -0.8px;
+            margin-bottom: 6px;
+        }
+        .admin-panel .admin-subtitle {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 20px;
+            font-family: var(--font-body);
+        }
+        .admin-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid var(--black);
+            background: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .admin-close:hover {
+            background: var(--pink);
+            color: #fff;
+            transform: scale(1.1);
+        }
+        .admin-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #eee;
+            padding-bottom: 12px;
+        }
+        .admin-tab {
+            padding: 10px 16px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.78rem;
+            font-family: var(--font-head);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            background: #f5f5f5;
+        }
+        .admin-tab.active {
+            background: var(--acid);
+            border-color: var(--black);
+            box-shadow: var(--shadow-sm);
+        }
+        .admin-tab:hover {
+            border-color: #ccc;
+        }
+        .admin-content-panel {
+            display: none;
+        }
+        .admin-content-panel.active {
+            display: block;
+        }
+        .admin-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .admin-input {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 16px;
+            border: 3px solid #ccc;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .admin-input:focus {
+            outline: none;
+            border-color: var(--black);
+            box-shadow: var(--shadow-sm);
+        }
+        .admin-btn {
+            padding: 12px 20px;
+            border-radius: var(--radius-pill);
+            border: 3px solid var(--black);
+            cursor: pointer;
+            font-weight: 700;
+            font-family: var(--font-head);
+            font-size: 0.8rem;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s var(--bounce);
+            white-space: nowrap;
+        }
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px #0a0a0a;
+        }
+        .admin-btn.danger {
+            background: #ff4444;
+            color: #fff;
+        }
+        .admin-btn.save {
+            background: var(--acid);
+            color: #000;
+        }
+        .admin-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .admin-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            gap: 8px;
+            flex-wrap: wrap;
+            background: #fafafa;
+        }
+        .admin-list li .item-text {
+            flex: 1;
+            min-width: 100px;
+        }
+        .admin-stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .admin-stat-card {
+            background: #f9f9f9;
+            border: 3px solid #ddd;
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            text-align: center;
+            font-family: var(--font-head);
+        }
+        .admin-stat-card .stat-num {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+        .admin-login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-left {
+                align-items: center;
+            }
+            .hero-sub {
+                max-width: 100%;
+            }
+            .phone-mockup {
+                width: 220px;
+                height: 440px;
+                transform: rotate(0);
+            }
+            .bento-card.span-2 {
+                grid-column: span 1;
+            }
+            .nav-pill {
+                gap: 2px;
+                padding: 6px 6px 6px 10px;
+                font-size: 0.7rem;
+            }
+            .nav-link {
+                font-size: 0.65rem;
+                padding: 6px 8px;
+            }
+            .nav-cta {
+                font-size: 0.65rem;
+                padding: 6px 10px;
+            }
+            .sticker {
+                display: none;
+            }
+            .marquee-item {
+                font-size: 1.2rem;
+            }
+            .admin-panel {
+                padding: 20px;
+                max-width: 95vw;
+            }
+        }
+        @media (max-width: 500px) {
+            .hero-headline {
+                font-size: 1.8rem;
+            }
+            .btn-brutal {
+                padding: 12px 20px;
+                font-size: 0.8rem;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            .phone-mockup {
+                width: 170px;
+                height: 340px;
+                border-radius: 28px;
+            }
+            .phone-screen {
+                border-radius: 24px;
+                padding: 10px;
+            }
+            .footer-bg-text {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+  
+      <!-- Particle Canvas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- STICKY NAV PILL -->
+    <nav class="nav-pill" id="navPill">
+        <span class="nav-logo">
+            <span class="logo-dot"></span> FOCUSZEN
+        </span>
+        <a href="#home" class="nav-link">home</a>
+        <a href="#features" class="nav-link">focus mode</a>
+        <a href="#meditation" class="nav-link">meditation</a>
+        <a href="#dashboard" class="nav-link">dashboard</a>
+        <a href="#music" class="nav-link">music</a>
+        <a href="#quotes" class="nav-link">quotes</a>
+        <a href="#" class="nav-cta" onclick="scrollToCTA()">get app</a>
+        <span class="nav-admin-link" onclick="openAdminPanel()" title="Admin Panel">🔑</span>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="home">
+        <div class="hero-grid">
+            <div class="hero-left">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span> AI-Powered Focus
+                </div>
+                <h1 class="hero-headline">study like a machine.<br>think like a monk.</h1>
+                <p class="hero-sub">
+                    FOCUSZEN helps students escape distractions, enter deep work states, build iron discipline,
+                    and actually <strong>enjoy</strong> studying — all inside a futuristic AI-powered ecosystem.
+                </p>
+                <div class="hero-btns">
+                    <button class="btn-brutal primary" onclick="startFocusSession()">⚡ start focus session</button>
+                    <button class="btn-brutal" onclick="scrollToFeatures()">📊 explore dashboard</button>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:center;position:relative;">
+                <!-- Phone Mockup -->
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-notch"></div>
+                        <div class="phone-widget phone-timer">
+                            <div style="font-size:0.6rem;color:#aaa;">⏱ FOCUS SESSION</div>
+                            <div class="timer-ring" id="phoneTimerDisplay">25:00</div>
+                            <div style="font-size:0.6rem;">25/5 Mode · Session 2/4</div>
+                        </div>
+                        <div class="phone-widget">
+                            <div style="font-size:0.6rem;color:#aaa;margin-bottom:4px;">🎵 NOW PLAYING</div>
+                            <div class="phone-music-bar">
+                                <span style="animation-delay:0s;height:60%;"></span>
+                                <span style="animation-delay:0.15s;height:90%;"></span>
+                                <span style="animation-delay:0.3s;height:40%;"></span>
+                                <span style="animation-delay:0.45s;height:100%;"></span>
+                                <span style="animation-delay:0.6s;height:55%;"></span>
+                                <span style="animation-delay:0.75s;height:80%;"></span>
+                                <span style="animation-delay:0.9s;height:30%;"></span>
+                            </div>
+                            <div style="font-size:0.55rem;color:#aaa;margin-top:4px;">44Hz Deep Focus →</div>
+                        </div>
+                        <div class="phone-widget phone-quote" id="phoneQuote">
+                            "Consistency beats motivation."
+                        </div>
+                        <div class="phone-badge-row">
+                            <span class="pb">☕ focus</span>
+                            <span class="pb">📚 study</span>
+                            <span class="pb">🎧 lofi</span>
+                            <span class="pb">🧠 ai</span>
+                            <span class="pb">⚡ flow</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Stickers -->
+                <div class="sticker s1">☕ deep work</div>
+                <div class="sticker s2">📚 no distractions</div>
+                <div class="sticker s3">🎧 focus music</div>
+                <div class="sticker s4">🧠 AI powered</div>
+                <div class="sticker s5">⚡ flow state</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLANTED MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track" id="marqueeTrack">
+            <span class="marquee-item">DEEP FOCUS</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">NO DISTRACTIONS</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">STUDY MODE ACTIVATED</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">BUILD DISCIPLINE</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">ENTER FLOW STATE</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">AI POWERED PRODUCTIVITY</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">DEEP FOCUS</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">NO DISTRACTIONS</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">STUDY MODE ACTIVATED</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">BUILD DISCIPLINE</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">ENTER FLOW STATE</span><span class="marquee-item dot">•</span>
+            <span class="marquee-item">AI POWERED PRODUCTIVITY</span><span class="marquee-item dot">•</span>
+        </div>
+    </div>
+
+    <!-- FEATURES BENTO GRID -->
+    <section id="features" style="padding-top:80px;">
+        <div style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-family:var(--font-head);font-weight:800;font-size:2.5rem;letter-spacing:-1px;">the ultimate focus ecosystem</h2>
+            <p style="color:#555;font-size:1rem;max-width:600px;margin:8px auto;">Everything you need to enter deep focus, stay consistent, and build unbreakable study discipline.</p>
+        </div>
+        <div class="bento-grid">
+            <!-- POMODORO -->
+            <div class="bento-card tilt-l" id="pomodoro-card">
+                <span class="bento-icon">⏱️</span>
+                <h3>Pomodoro System</h3>
+                <p>Customizable study timer with 25/5, 50/10, and custom modes. Animated countdown with productivity analytics.</p>
+                <div class="timer-demo">
+                    <div class="timer-demo-circle" id="bentoTimerDisplay">25:00</div>
+                    <div class="timer-demo-controls">
+                        <span class="timer-chip active" onclick="setBentoMode(25,this)">25/5</span>
+                        <span class="timer-chip" onclick="setBentoMode(50,this)">50/10</span>
+                        <span class="timer-chip" onclick="setBentoMode('custom',this)">custom</span>
+                    </div>
+                </div>
+                <span class="bento-tag">🍅 pomodoro</span>
+            </div>
+
+            <!-- DEEP FOCUS MODE -->
+            <div class="bento-card tilt-r accent-purple">
+                <span class="bento-icon">🎯</span>
+                <h3>Deep Focus Mode</h3>
+                <p>Activate immersive fullscreen focus. Distractions vanish, ambient visuals appear, and calming particles guide your concentration.</p>
+                <button class="btn-brutal" style="margin-top:12px;font-size:0.8rem;padding:10px 20px;" onclick="toggleDeepFocus()">🔮 enter deep focus</button>
+                <span class="bento-tag">immersive</span>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div class="bento-card tilt-l accent-acid" id="dashboard">
+                <span class="bento-icon">📊</span>
+                <h3>Real-Time Dashboard</h3>
+                <p>Live clock, focus score, streak tracking, session history, and AI-powered productivity insights — all in one view.</p>
+                <div style="font-family:var(--font-head);font-weight:800;font-size:1.5rem;" id="dashboardClock">--:--</div>
+                <div style="font-size:0.8rem;color:#555;" id="dashboardDate">---</div>
+                <span class="bento-tag">📈 analytics</span>
+            </div>
+
+            <!-- AI MOTIVATION -->
+            <div class="bento-card tilt-r accent-pink span-2" id="quotes">
+                <span class="bento-icon">💬</span>
+                <h3>AI Motivation Engine</h3>
+                <p style="font-style:italic;font-size:1rem;" id="mainQuoteDisplay">"The secret of getting ahead is getting started." — Mark Twain</p>
+                <p style="color:var(--purple);font-weight:600;margin-top:6px;" id="hindiQuoteDisplay">"मेहनत इतनी खामोशी से करो कि सफलता शोर मचा दे।"</p>
+                <span class="bento-tag">✨ motivation</span>
+            </div>
+
+            <!-- MUSIC SYSTEM -->
+            <div class="bento-card tilt-l" id="music">
+                <span class="bento-icon">🎵</span>
+                <h3>Deep Study Music</h3>
+                <p>44Hz focus sounds, 90Hz concentration, lo-fi beats, rain sounds, and meditation audio — all with smooth transitions.</p>
+                <div class="timer-demo-controls" style="margin-top:10px;">
+                    <span class="timer-chip active" onclick="selectMusic('44hz',this)">44Hz</span>
+                    <span class="timer-chip" onclick="selectMusic('90hz',this)">90Hz</span>
+                    <span class="timer-chip" onclick="selectMusic('lofi',this)">Lo-Fi</span>
+                    <span class="timer-chip" onclick="selectMusic('rain',this)">🌧 Rain</span>
+                </div>
+                <button class="btn-brutal" style="margin-top:10px;font-size:0.75rem;padding:8px 16px;" onclick="toggleMusicPlay()" id="musicToggleBtn">▶ Play</button>
+                <span class="bento-tag">🎧 audio</span>
+            </div>
+
+            <!-- MEDITATION -->
+            <div class="bento-card tilt-r accent-purple span-2" id="meditation">
+                <span class="bento-icon">🧘</span>
+                <h3>Meditation Mode</h3>
+                <p>Breathing exercises with animated visualizer, meditation timer, and peaceful ambient sounds for stress relief and mindfulness.</p>
+                <div class="breath-demo" id="breathCircle">inhale</div>
+                <div style="text-align:center;font-family:var(--font-head);font-weight:800;font-size:1.2rem;" id="medTimerDisplay">05:00</div>
+                <button class="btn-brutal" style="font-size:0.8rem;padding:10px 20px;" onclick="toggleMeditationDemo()" id="medDemoBtn">▶ start meditation</button>
+                <span class="bento-tag">🕉️ calm</span>
+            </div>
+
+            <!-- AESTHETIC ENVIRONMENT -->
+            <div class="bento-card tilt-l accent-acid">
+                <span class="bento-icon">🌿</span>
+                <h3>Aesthetic Study Environment</h3>
+                <p>Lo-fi study room visuals, futuristic desk setups, calm anime-inspired scenes, and immersive backgrounds to reduce stress.</p>
+                <span class="bento-tag">🎨 aesthetic</span>
+            </div>
+
+            <!-- SOUND SYSTEM -->
+            <div class="bento-card tilt-r">
+                <span class="bento-icon">🔔</span>
+                <h3>Premium Sound System</h3>
+                <p>Soft timer alarms, meditation bells, focus completion tones, and calming click sounds — all premium and futuristic.</p>
+                <span class="bento-tag">🔊 sounds</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section">
+        <div style="text-align:center;margin-bottom:30px;">
+            <h2 style="font-family:var(--font-head);font-weight:800;font-size:2.2rem;letter-spacing:-1px;">frequently asked</h2>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-q"><span>how does focus mode work?</span><span class="faq-arrow">▼</span></div>
+                <div class="faq-a">Deep Focus Mode creates an immersive fullscreen environment that blocks visual distractions. The interface darkens, calming particles appear, and focus music starts automatically — helping you enter a deep work state within seconds.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-q"><span>can i customize sessions?</span><span class="faq-arrow">▼</span></div>
+                <div class="faq-a">Absolutely! Choose from 25/5, 50/10, or set fully custom focus and break durations. The AI adapts recommendations based on your productivity patterns over time.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-q"><span>does the music help concentration?</span><span class="faq-arrow">▼</span></div>
+                <div class="faq-a">Yes! Our 44Hz and 90Hz frequencies are scientifically linked to improved focus and concentration. Combined with lo-fi beats and ambient sounds, they create the perfect auditory environment for deep study.</div>
+                </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-q"><span>does the music help concentration?</span><span class="faq-arrow">▼</span></div>
+                <div class="faq-a">Yes! Our 44Hz and 90Hz frequencies are scientifically linked to improved focus and concentration. Combined with lo-fi beats and ambient sounds, they create the perfect auditory environment for deep study.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-q"><span>how does meditation mode work?</span><span class="faq-arrow">▼</span></div>
+                <div class="faq-a">Meditation mode guides you through breathing exercises with a visual inhale/exhale animation. Set a timer (3, 5, or 10 minutes), and let the calming UI and peaceful sounds help you reset your mind between study sessions.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-q"><span>is the AI productivity system personalized?</span><span class="faq-arrow">▼</span></div>
+                <div class="faq-a">Yes! The AI analyzes your session history, peak productivity hours, and consistency patterns to deliver personalized recommendations, focus insights, and motivational nudges tailored to your unique study rhythm.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section" id="cta">
+        <div class="cta-bg-shape shape1"></div>
+        <div class="cta-bg-shape shape2"></div>
+        <h2 class="cta-headline">your focus is your<br>superpower.</h2>
+        <p class="cta-sub">Stop scrolling. Start studying. Enter the future of productivity.</p>
+        <button class="btn-brutal" onclick="startFocusSession()" style="font-size:1.1rem;padding:18px 36px;">
+            🚀 start your deep focus journey
+        </button>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer-section">
+        <div class="footer-bg-text">FOCUSZEN</div>
+        <div class="footer-content">
+            <div>
+                <span style="font-family:var(--font-head);font-weight:800;font-size:1.2rem;">FOCUSZEN</span>
+                <p class="footer-copy">© 2026  FOCUSZEN. Powered by GIGAINFINITY ♾️</p>
+            </div>
+            <div class="footer-links">
+                <a href="#home">home</a>
+                <a href="#features">features</a>
+                <a href="#meditation">meditation</a>
+                <a href="#quotes">quotes</a>
+                <a href="#">privacy</a>
+                <a href="#">terms</a>
+                <a href="#" onclick="openAdminPanel()">admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DEEP FOCUS OVERLAY -->
+    <div id="deepFocusOverlay" style="position:fixed;inset:0;z-index:1500;background:rgba(5,5,5,0.95);display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+        <button onclick="toggleDeepFocus()" style="position:absolute;top:20px;right:20px;padding:12px 24px;border-radius:30px;border:3px solid #fff;background:transparent;color:#fff;cursor:pointer;font-weight:700;font-family:var(--font-head);">✕ exit focus</button>
+        <div style="font-family:var(--font-head);font-weight:800;font-size:3rem;color:#fff;letter-spacing:-1px;">🔮 Deep Focus Mode</div>
+        <div style="width:160px;height:160px;border-radius:50%;border:6px solid var(--acid);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:#fff;font-family:var(--font-head);box-shadow:0 0 60px rgba(204,255,0,0.5);" id="focusOverlayTimer">25:00</div>
+        <button class="btn-brutal primary" style="font-size:1rem;" onclick="toggleDeepFocusTimer()" id="focusOverlayBtn">▶ begin deep work</button>
+    </div>
+
+    <!-- ADMIN PANEL OVERLAY -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-panel" id="adminPanel">
+            <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+            <h2>🔐 FOCUSZEN Admin</h2>
+            <p class="admin-subtitle">Secure content management system</p>
+
+            <!-- Admin Login -->
+            <div id="adminLoginSection" class="admin-login-form">
+                <p style="font-weight:600;font-family:var(--font-head);">Enter admin password to continue</p>
+                <input type="password" class="admin-input" id="adminPassword" placeholder="Password" style="max-width:250px;text-align:center;">
+                <button class="admin-btn save" onclick="adminLogin()"> Unlock Admin Panel</button>
+                <p id="adminLoginError" style="color:red;font-size:0.75rem;display:none;">Incorrect password!</p>
+            </div>
+
+            <!-- Admin Content (hidden until login) -->
+            <div id="adminContentSection" style="display:none;">
+                <div class="admin-tabs">
+                    <span class="admin-tab active" onclick="switchAdminTab('quotes',this)">💬 Quotes</span>
+                    <span class="admin-tab" onclick="switchAdminTab('music',this)"> Music</span>
+                    <span class="admin-tab" onclick="switchAdminTab('images',this)">🖼 Images</span>
+                    <span class="admin-tab" onclick="switchAdminTab('dashboard',this)">📊 Dashboard</span>
+                    <span class="admin-tab" onclick="switchAdminTab('analytics',this)">📈 Analytics</span>
+                    <span class="admin-tab" onclick="switchAdminTab('notifications',this)">🔔 Notifications</span>
+                </div>
+
+                <!-- Quotes Panel -->
+                <div class="admin-content-panel active" id="admin-panel-quotes">
+                    <h3 style="font-family:var(--font-head);margin-bottom:10px;">Manage Motivational Quotes</h3>
+                    <div class="admin-input-group">
+                        <input type="text" class="admin-input" id="newQuoteText" placeholder="Quote text...">
+                        <input type="text" class="admin-input" id="newQuoteAuthor" placeholder="Author..." style="max-width:180px;">
+                        <select class="admin-input" id="newQuoteType" style="max-width:130px;">
+                            <option value="english">English</option>
+                            <option value="hindi">Hindi Shayari</option>
+                        </select>
+                        <button class="admin-btn save" onclick="addQuote()">+ Add Quote</button>
+                    </div>
+                    <ul class="admin-list" id="adminQuoteList"></ul>
+                </div>
+
+                <!-- Music Panel -->
+                <div class="admin-content-panel" id="admin-panel-music">
+                    <h3 style="font-family:var(--font-head);margin-bottom:10px;">Manage Music Categories</h3>
+                    <div class="admin-input-group">
+                        <input type="text" class="admin-input" id="newMusicName" placeholder="Music track name...">
+                        <select class="admin-input" id="newMusicCat" style="max-width:160px;">
+                            <option value="44hz">44Hz Focus</option>
+                            <option value="90hz">90Hz Concentration</option>
+                            <option value="lofi">Lo-Fi</option>
+                            <option value="rain">Rain Sounds</option>
+                            <option value="meditation">Meditation</option>
+                            <option value="ambient">Ambient</option>
+                        </select>
+                        <button class="admin-btn save" onclick="addMusicTrack()">+ Add Track</button>
+                    </div>
+                    <ul class="admin-list" id="adminMusicList"></ul>
+                </div>
+
+                <!-- Images Panel -->
+                <div class="admin-content-panel" id="admin-panel-images">
+                    <h3 style="font-family:var(--font-head);margin-bottom:10px;">Manage Images & Wallpapers</h3>
+                    <div class="admin-input-group">
+                        <input type="text" class="admin-input" id="newImageURL" placeholder="Image URL...">
+                        <select class="admin-input" id="newImageCat" style="max-width:160px;">
+                            <option value="study">Study Rooms</option>
+                            <option value="meditation">Meditation</option>
+                            <option value="lofi">LoFi Aesthetic</option>
+                            <option value="anime">Anime</option>
+                            <option value="desk">Futuristic Desks</option>
+                            <option value="motivation">Motivation</option>
+                        </select>
+                        <button class="admin-btn save" onclick="addImage()">+ Add Image</button>
+                    </div>
+                    <ul class="admin-list" id="adminImageList"></ul>
+                </div>
+
+                <!-- Dashboard Panel -->
+                <div class="admin-content-panel" id="admin-panel-dashboard">
+                    <h3 style="font-family:var(--font-head);margin-bottom:10px;">Dashboard Content</h3>
+                    <div class="admin-input-group" style="flex-direction:column;">
+                        <label style="font-weight:600;font-size:0.85rem;">Welcome Greeting</label>
+                        <input type="text" class="admin-input" id="dashboardGreeting" placeholder="Welcome message...">
+                        <label style="font-weight:600;font-size:0.85rem;">Hero Subtext</label>
+                        <input type="text" class="admin-input" id="dashboardHeroSub" placeholder="Hero subtext...">
+                        <button class="admin-btn save" onclick="saveDashboardContent()">💾 Save Dashboard</button>
+                    </div>
+                </div>
+
+                <!-- Analytics Panel -->
+                <div class="admin-content-panel" id="admin-panel-analytics">
+                    <h3 style="font-family:var(--font-head);margin-bottom:10px;">Real-Time Analytics</h3>
+                    <div class="admin-stat-row">
+                        <div class="admin-stat-card"><div class="stat-num" id="analTotalSessions">0</div><small>Total Sessions</small></div>
+                        <div class="admin-stat-card"><div class="stat-num" id="analTotalMinutes">0</div><small>Focus Minutes</small></div>
+                        <div class="admin-stat-card"><div class="stat-num" id="analActiveUsers">1</div><small>Active Users</small></div>
+                        <div class="admin-stat-card"><div class="stat-num" id="analStreak">0</div><small>Best Streak</small></div>
+                    </div>
+                    <p style="font-size:0.8rem;color:#555;">📊 Data updates in real-time from local storage.</p>
+                </div>
+
+                <!-- Notifications Panel -->
+                <div class="admin-content-panel" id="admin-panel-notifications">
+                    <h3 style="font-family:var(--font-head);margin-bottom:10px;">Send Notifications</h3>
+                    <div class="admin-input-group" style="flex-direction:column;">
+                        <input type="text" class="admin-input" id="notificationText" placeholder="Notification message...">
+                        <button class="admin-btn save" onclick="sendNotification()">📨 Send Now</button>
+                    </div>
+                    <ul class="admin-list" id="adminNotificationList"></ul>
+                </div>
+
+                <button class="admin-btn danger" style="margin-top:16px;" onclick="adminLogout()">🔒 Logout</button>
+            </div>
+        </div>
+    </div>
+
+  <script>
+        (function() {
+            // ==================== PARTICLES ====================
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const PC = 50;
+
+            function resizeC() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeC();
+            window.addEventListener('resize', resizeC);
+
+            class P {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.s = Math.random() * 3 + 1;
+                    this.vx = (Math.random() - 0.5) * 0.6;
+                    this.vy = (Math.random() - 0.5) * 0.6;
+                    this.o = Math.random() * 0.5 + 0.2;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < -20) this.x = canvas.width + 20;
+                    if (this.x > canvas.width + 20) this.x = -20;
+                    if (this.y < -20) this.y = canvas.height + 20;
+                    if (this.y > canvas.height + 20) this.y = -20;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(112,0,255,${this.o})`;
+                    ctx.fill();
+                }
+            }
+            for (let i = 0; i < PC; i++) particles.push(new P());
+
+            function animParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+                requestAnimationFrame(animParticles);
+            }
+            animParticles();
+
+            // ==================== CLOCK ====================
+            function updateDashboardClock() {
+                const now = new Date();
+                document.getElementById('dashboardClock').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit',
+                    minute: '2-digit', second: '2-digit', hour12: true });
+                document.getElementById('dashboardDate').textContent = now.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+            updateDashboardClock();
+            setInterval(updateDashboardClock, 1000);
+
+            // ==================== PHONE TIMER DISPLAY ====================
+            function updatePhoneTimer() {
+                const d = document.getElementById('phoneTimerDisplay');
+                if (d && !document.getElementById('deepFocusOverlay').style.display.includes('flex')) {
+                    const m = bentoTimerMode;
+                    const s = m * 60;
+                    const mm = Math.floor(s / 60);
+                    d.textContent = `${String(mm).padStart(2,'0')}:00`;
+                }
+            }
+            let bentoTimerMode = 25;
+            updatePhoneTimer();
+
+            function setBentoMode(mode, el) {
+                document.querySelectorAll('#pomodoro-card .timer-chip').forEach(c => c.classList.remove('active'));
+                if (el) el.classList.add('active');
+                if (mode === 'custom') {
+                    const cm = prompt('Custom focus minutes:', '30');
+                    if (cm) bentoTimerMode = parseInt(cm);
+                } else {
+                    bentoTimerMode = mode;
+                }
+                updatePhoneTimer();
+                document.getElementById('bentoTimerDisplay').textContent = `${String(bentoTimerMode).padStart(2,'0')}:00`;
+            }
+            window.setBentoMode = setBentoMode;
+
+            // ==================== QUOTES ====================
+            const defaultQuotes = [
+                { text: '"The secret of getting ahead is getting started."', author: 'Mark Twain', type: 'english' },
+                { text: '"Discipline is the bridge between goals and accomplishment."', author: 'Jim Rohn',
+                type: 'english' },
+                { text: '"Focus on being productive instead of busy."', author: 'Tim Ferriss', type: 'english' },
+                { text: '"मेहनत इतनी खामोशी से करो कि सफलता शोर मचा दे।"', author: '— Hindi Shayari', type: 'hindi' },
+                { text: '"सपने वो नहीं जो हम सोते वक्त देखते हैं, सपने वो हैं जो हमें सोने नहीं देते।"', author: '— APJ Abdul Kalam',
+                    type: 'hindi' },
+                { text: '"Small daily improvements over time lead to stunning results."', author: 'Robin Sharma',
+                    type: 'english' },
+            ];
+
+            function loadQuotes() {
+                try {
+                    const q = JSON.parse(localStorage.getItem('focuszen_quotes'));
+                    if (q && q.length > 0) return q;
+                } catch (e) {}
+                return [...defaultQuotes];
+            }
+            let quotesData = loadQuotes();
+            let quoteIdx = Math.floor(Math.random() * quotesData.length);
+
+            function rotateQuote() {
+                quoteIdx = (quoteIdx + 1) % quotesData.length;
+                const q = quotesData[quoteIdx];
+                document.getElementById('mainQuoteDisplay').textContent = q.text + (q.author ? ' — ' + q.author :
+                '');
+                const hindiQ = quotesData.find(qq => qq.type === 'hindi');
+                if (hindiQ) document.getElementById('hindiQuoteDisplay').textContent = hindiQ.text + (hindiQ.author ?
+                    ' ' + hindiQ.author : '');
+                document.getElementById('phoneQuote').textContent = q.text.replace(/"/g, '');
+            }
+            rotateQuote();
+            setInterval(rotateQuote, 12000);
+
+            // ==================== FAQ ====================
+            function toggleFAQ(el) {
+                el.classList.toggle('open');
+            }
+            window.toggleFAQ = toggleFAQ;
+
+            // ==================== DEEP FOCUS MODE ====================
+            let deepFocusActive = false;
+            let deepFocusTimerRunning = false;
+            let deepFocusInterval = null;
+            let deepFocusTime = 25 * 60;
+            let deepFocusTotal = 25 * 60;
+
+            function toggleDeepFocus() {
+                deepFocusActive = !deepFocusActive;
+                const overlay = document.getElementById('deepFocusOverlay');
+                if (deepFocusActive) {
+                    overlay.style.display = 'flex';
+                    deepFocusTime = bentoTimerMode * 60;
+                    deepFocusTotal = deepFocusTime;
+                    updateFocusOverlayDisplay();
+                    document.getElementById('focusOverlayBtn').textContent = '▶ begin deep work';
+                } else {
+                    overlay.style.display = 'none';
+                    if (deepFocusTimerRunning) stopDeepFocusTimer();
+                }
+            }
+            window.toggleDeepFocus = toggleDeepFocus;
+
+            function updateFocusOverlayDisplay() {
+                const m = Math.floor(deepFocusTime / 60);
+                const s = deepFocusTime % 60;
+                document.getElementById('focusOverlayTimer').textContent =
+                    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            }
+
+            function toggleDeepFocusTimer() {
+                if (deepFocusTimerRunning) {
+                    stopDeepFocusTimer();
+                    document.getElementById('focusOverlayBtn').textContent = '▶ resume';
+                    return;
+                }
+                if (deepFocusTime <= 0) {
+                    deepFocusTime = deepFocusTotal;
+                    updateFocusOverlayDisplay();
+                }
+                deepFocusTimerRunning = true;
+                document.getElementById('focusOverlayBtn').textContent = '⏸ pause';
+                deepFocusInterval = setInterval(() => {
+                    deepFocusTime--;
+                    updateFocusOverlayDisplay();
+                    if (deepFocusTime <= 0) {
+                        stopDeepFocusTimer();
+                        document.getElementById('focusOverlayBtn').textContent = '✓ complete!';
+                        playBeep(880, 0.5);
+                        setTimeout(() => {
+                            deepFocusTime = deepFocusTotal;
+                            updateFocusOverlayDisplay();
+                            document.getElementById('focusOverlayBtn').textContent =
+                                '▶ begin deep work';
+                        }, 2000);
+                    }
+                }, 1000);
+            }
+            window.toggleDeepFocusTimer = toggleDeepFocusTimer;
+
+            function stopDeepFocusTimer() {
+                deepFocusTimerRunning = false;
+                if (deepFocusInterval) clearInterval(deepFocusInterval);
+                deepFocusInterval = null;
+            }
+
+            // ==================== MEDITATION DEMO ====================
+            let medDemoRunning = false;
+            let medDemoInterval = null;
+            let medDemoTime = 5 * 60;
+
+            function toggleMeditationDemo() {
+                const circle = document.getElementById('breathCircle');
+                const btn = document.getElementById('medDemoBtn');
+                if (medDemoRunning) {
+                    medDemoRunning = false;
+                    if (medDemoInterval) clearInterval(medDemoInterval);
+                    medDemoInterval = null;
+                    circle.textContent = 'inhale';
+                    circle.style.animationPlayState = 'paused';
+                    btn.textContent = '▶ start meditation';
+                    return;
+                }
+                medDemoRunning = true;
+                medDemoTime = 5 * 60;
+                circle.style.animationPlayState = 'running';
+                btn.textContent = '⏸ pause';
+                updateMedDemoDisplay();
+                medDemoInterval = setInterval(() => {
+                    medDemoTime--;
+                    updateMedDemoDisplay();
+                    const phase = Math.floor(medDemoTime / 4) % 4;
+                    if (phase === 0 || phase === 3) circle.textContent = 'inhale';
+                    else circle.textContent = 'exhale';
+                    if (medDemoTime <= 0) {
+                        medDemoRunning = false;
+                        clearInterval(medDemoInterval);
+                        medDemoInterval = null;
+                        circle.textContent = 'done ✨';
+                        btn.textContent = '▶ start meditation';
+                        playBeep(440, 0.8);
+                        medDemoTime = 5 * 60;
+                        setTimeout(() => { circle.textContent = 'inhale';
+                            updateMedDemoDisplay(); }, 2000);
+                    }
+                }, 1000);
+            }
+            window.toggleMeditationDemo = toggleMeditationDemo;
+
+            function updateMedDemoDisplay() {
+                const m = Math.floor(medDemoTime / 60);
+                const s = medDemoTime % 60;
+                document.getElementById('medTimerDisplay').textContent =
+                    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            }
+
+            // ==================== MUSIC SYSTEM ====================
+            let audioCtx = null;
+            let musicPlaying = false;
+            let currentMusic = '44hz';
+            let musicOscillators = [];
+
+            function initAudio() {
+                if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            }
+
+            function stopAllMusic() {
+                musicOscillators.forEach(o => { try { o.stop(); } catch (e) {} });
+                musicOscillators = [];
+            }
+
+            function playMusic(type) {
+                initAudio();
+                stopAllMusic();
+                const now = audioCtx.currentTime;
+                if (type === '44hz') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = 44;
+                    gain.gain.setValueAtTime(0.08, now);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    musicOscillators.push(osc);
+                } else if (type === '90hz') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = 90;
+                    gain.gain.setValueAtTime(0.06, now);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    musicOscillators.push(osc);
+                } else if (type === 'lofi') {
+                    const notes = [261, 329, 392, 440, 523, 440, 392, 329];
+                    let ni = 0;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = notes[ni];
+                    gain.gain.setValueAtTime(0.05, now);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    musicOscillators.push(osc);
+                    const iv = setInterval(() => {
+                        if (!musicPlaying || currentMusic !== 'lofi') { clearInterval(iv); return; }
+                        ni = (ni + 1) % notes.length;
+                        osc.frequency.setTargetAtTime(notes[ni], audioCtx.currentTime, 0.3);
+                    }, 700);
+                    musicOscillators.push({ stop: () => clearInterval(iv) });
+                } else if (type === 'rain') {
+                    const bufSize = 4096;
+                    const scriptNode = audioCtx.createScriptProcessor(bufSize, 1, 1);
+                    const gain = audioCtx.createGain();
+                    gain.gain.setValueAtTime(0.1, now);
+                    scriptNode.onaudioprocess = function(e) {
+                        const out = e.outputBuffer.getChannelData(0);
+                        for (let i = 0; i < bufSize; i++) out[i] = (Math.random() * 2 - 1) * 0.25;
+                    };
+                    scriptNode.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    musicOscillators.push({ stop: () => { scriptNode.disconnect();
+                            gain.disconnect(); } });
+                }
+            }
+
+            function selectMusic(type, el) {
+                currentMusic = type;
+                document.querySelectorAll('#music .timer-chip').forEach(c => c.classList.remove('active'));
+                if (el) el.classList.add('active');
+                if (musicPlaying) {
+                    stopAllMusic();
+                    playMusic(type);
+                }
+            }
+            window.selectMusic = selectMusic;
+
+            function toggleMusicPlay() {
+                const btn = document.getElementById('musicToggleBtn');
+                if (musicPlaying) {
+                    stopAllMusic();
+                    musicPlaying = false;
+                    btn.textContent = '▶ Play';
+                } else {
+                    musicPlaying = true;
+                    playMusic(currentMusic);
+                    btn.textContent = '⏸ Pause';
+                }
+            }
+            window.toggleMusicPlay = toggleMusicPlay;
+
+            function playBeep(freq, dur) {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + dur + 0.05);
+            }
+
+            // ==================== NAVIGATION HELPERS ====================
+            function scrollToCTA() { document.getElementById('cta').scrollIntoView({ behavior: 'smooth' }); }
+
+            function scrollToFeatures() { document.getElementById('features').scrollIntoView({ behavior: 'smooth' }); }
+
+            function startFocusSession() {
+                document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => toggleDeepFocus(), 600);
+            }
+            window.scrollToCTA = scrollToCTA;
+            window.scrollToFeatures = scrollToFeatures;
+            window.startFocusSession = startFocusSession;
+
+            // ==================== ADMIN PANEL ====================
+           const ADMIN_PASSWORD = 'focuszen2026';
+            let adminLoggedIn = false;
+            let adminMusicTracks = [];
+            let adminImages = [];
+            let adminNotifications = [];
+
+            function loadAdminData() {
+                try {
+                    adminMusicTracks = JSON.parse(localStorage.getItem('focuszen_admin_music') || '[]');
+                    adminImages = JSON.parse(localStorage.getItem('focuszen_admin_images') || '[]');
+                    adminNotifications = JSON.parse(localStorage.getItem('focuszen_admin_notifications') || '[]');
+                } catch (e) {
+                    adminMusicTracks = [];
+                    adminImages = [];
+                    adminNotifications = [];
+                }
+            }
+            loadAdminData();
+
+            function saveAdminData() {
+                localStorage.setItem('focuszen_admin_music', JSON.stringify(adminMusicTracks));
+                localStorage.setItem('focuszen_admin_images', JSON.stringify(adminImages));
+                localStorage.setItem('focuszen_admin_notifications', JSON.stringify(adminNotifications));
+            }
+
+            function openAdminPanel() {
+                document.getElementById('adminOverlay').classList.add('active');
+                document.getElementById('adminLoginSection').style.display = 'flex';
+                document.getElementById('adminContentSection').style.display = 'none';
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminLoginError').style.display = 'none';
+                adminLoggedIn = false;
+                loadAdminData();
+                renderAdminLists();
+            }
+            window.openAdminPanel = openAdminPanel;
+
+            function closeAdminPanel() {
+                document.getElementById('adminOverlay').classList.remove('active');
+                adminLoggedIn = false;
+                document.getElementById('adminLoginSection').style.display = 'flex';
+                document.getElementById('adminContentSection').style.display = 'none';
+            }
+            window.closeAdminPanel = closeAdminPanel;
+
+            function adminLogin() {
+                const pw = document.getElementById('adminPassword').value;
+                if (pw === ADMIN_PASSWORD) {
+                    adminLoggedIn = true;
+                    document.getElementById('adminLoginSection').style.display = 'none';
+                    document.getElementById('adminContentSection').style.display = 'block';
+                    document.getElementById('adminLoginError').style.display = 'none';
+                    loadAdminData();
+                    renderAdminLists();
+                    updateAdminAnalytics();
+                } else {
+                    document.getElementById('adminLoginError').style.display = 'block';
+                }
+            }
+            window.adminLogin = adminLogin;
+
+            function adminLogout() {
+                adminLoggedIn = false;
+                document.getElementById('adminLoginSection').style.display = 'flex';
+                document.getElementById('adminContentSection').style.display = 'none';
+                document.getElementById('adminPassword').value = '';
+            }
+            window.adminLogout = adminLogout;
+
+            function switchAdminTab(tab, el) {
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.admin-content-panel').forEach(p => p.classList.remove('active'));
+                if (el) el.classList.add('active');
+                const panel = document.getElementById('admin-panel-' + tab);
+                if (panel) panel.classList.add('active');
+                if (tab === 'analytics') updateAdminAnalytics();
+                renderAdminLists();
+            }
+            window.switchAdminTab = switchAdminTab;
+
+            // Quotes CRUD
+            function addQuote() {
+                if (!adminLoggedIn) return;
+                const text = document.getElementById('newQuoteText').value.trim();
+                const author = document.getElementById('newQuoteAuthor').value.trim();
+                const type = document.getElementById('newQuoteType').value;
+                if (!text) return;
+                quotesData.push({ text, author, type });
+                localStorage.setItem('focuszen_quotes', JSON.stringify(quotesData));
+                document.getElementById('newQuoteText').value = '';
+                document.getElementById('newQuoteAuthor').value = '';
+                renderAdminLists();
+            }
+            window.addQuote = addQuote;
+
+            function deleteQuote(index) {
+                if (!adminLoggedIn) return;
+                quotesData.splice(index, 1);
+                localStorage.setItem('focuszen_quotes', JSON.stringify(quotesData));
+                renderAdminLists();
+            }
+            window.deleteQuote = deleteQuote;
+
+            // Music CRUD
+            function addMusicTrack() {
+                if (!adminLoggedIn) return;
+                const name = document.getElementById('newMusicName').value.trim();
+                const cat = document.getElementById('newMusicCat').value;
+                if (!name) return;
+                adminMusicTracks.push({ name, category: cat, added: new Date().toISOString() });
+                saveAdminData();
+                document.getElementById('newMusicName').value = '';
+                renderAdminLists();
+            }
+            window.addMusicTrack = addMusicTrack;
+
+            function deleteMusicTrack(index) {
+                if (!adminLoggedIn) return;
+                adminMusicTracks.splice(index, 1);
+                saveAdminData();
+                renderAdminLists();
+            }
+            window.deleteMusicTrack = deleteMusicTrack;
+
+            // Images CRUD
+            function addImage() {
+                if (!adminLoggedIn) return;
+                const url = document.getElementById('newImageURL').value.trim();
+                const cat = document.getElementById('newImageCat').value;
+                if (!url) return;
+                adminImages.push({ url, category: cat, added: new Date().toISOString() });
+                saveAdminData();
+                document.getElementById('newImageURL').value = '';
+                renderAdminLists();
+            }
+            window.addImage = addImage;
+
+            function deleteImage(index) {
+                if (!adminLoggedIn) return;
+                adminImages.splice(index, 1);
+                saveAdminData();
+                renderAdminLists();
+            }
+            window.deleteImage = deleteImage;
+
+            // Dashboard content
+            function saveDashboardContent() {
+                if (!adminLoggedIn) return;
+                const greeting = document.getElementById('dashboardGreeting').value;
+                const heroSub = document.getElementById('dashboardHeroSub').value;
+                localStorage.setItem('focuszen_dashboard_greeting', greeting);
+                localStorage.setItem('focuszen_dashboard_heroSub', heroSub);
+                alert('Dashboard content saved!');
+            }
+            window.saveDashboardContent = saveDashboardContent;
+
+            // Notifications
+            function sendNotification() {
+                if (!adminLoggedIn) return;
+                const text = document.getElementById('notificationText').value.trim();
+                if (!text) return;
+                adminNotifications.push({ text, time: new Date().toISOString() });
+                saveAdminData();
+                document.getElementById('notificationText').value = '';
+                renderAdminLists();
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification('FOCUSZEN', { body: text });
+                }
+            }
+            window.sendNotification = sendNotification;
+
+            function deleteNotification(index) {
+                if (!adminLoggedIn) return;
+                adminNotifications.splice(index, 1);
+                saveAdminData();
+                renderAdminLists();
+            }
+            window.deleteNotification = deleteNotification;
+
+            function updateAdminAnalytics() {
+                const stats = loadStats();
+                document.getElementById('analTotalSessions').textContent = stats.totalSessions;
+                document.getElementById('analTotalMinutes').textContent = stats.totalMinutes;
+                document.getElementById('analStreak').textContent = stats.bestStreak;
+            }
+
+            function loadStats() {
+                try {
+                    const s = JSON.parse(localStorage.getItem('focuszen_stats'));
+                    if (s) return s;
+                } catch (e) {}
+                return { totalSessions: 0, totalMinutes: 0, bestStreak: 0, currentStreak: 0 };
+            }
+
+            function renderAdminLists() {
+                // Quotes
+                const qList = document.getElementById('adminQuoteList');
+                if (qList) {
+                    qList.innerHTML = quotesData.map((q, i) => `
+                <li>
+                  <span class="item-text">${q.text.substring(0,60)}... <small>(${q.type})</small></span>
+                  <button class="admin-btn danger" style="padding:6px 12px;font-size:0.7rem;" onclick="deleteQuote(${i})">✕</button>
+                </li>`).join('') || '<li style="color:#999;">No quotes yet.</li>';
+                }
+                // Music
+                const mList = document.getElementById('adminMusicList');
+                if (mList) {
+                    mList.innerHTML = adminMusicTracks.map((t, i) => `
+                <li>
+                  <span class="item-text">🎵 ${t.name} <small>[${t.category}]</small></span>
+                  <button class="admin-btn danger" style="padding:6px 12px;font-size:0.7rem;" onclick="deleteMusicTrack(${i})">✕</button>
+                </li>`).join('') || '<li style="color:#999;">No tracks added.</li>';
+                }
+                // Images
+                const iList = document.getElementById('adminImageList');
+                if (iList) {
+                    iList.innerHTML = adminImages.map((img, i) => `
+                <li>
+                  <span class="item-text">🖼 ${img.url.substring(0,40)}... <small>[${img.category}]</small></span>
+                  <button class="admin-btn danger" style="padding:6px 12px;font-size:0.7rem;" onclick="deleteImage(${i})">✕</button>
+                </li>`).join('') || '<li style="color:#999;">No images added.</li>';
+                }
+                // Notifications
+                const nList = document.getElementById('adminNotificationList');
+                if (nList) {
+                    nList.innerHTML = adminNotifications.map((n, i) => `
+                <li>
+                  <span class="item-text">🔔 ${n.text.substring(0,50)}...</span>
+                  <small>${new Date(n.time).toLocaleString()}</small>
+                  <button class="admin-btn danger" style="padding:6px 12px;font-size:0.7rem;" onclick="deleteNotification(${i})">✕</button>
+                </li>`).join('') || '<li style="color:#999;">No notifications sent.</li>';
+                }
+                // Load dashboard saved content
+                const savedGreeting = localStorage.getItem('focuszen_dashboard_greeting');
+                const savedHeroSub = localStorage.getItem('focuszen_dashboard_heroSub');
+                if (savedGreeting && document.getElementById('dashboardGreeting'))
+                    document.getElementById('dashboardGreeting').value = savedGreeting;
+                if (savedHeroSub && document.getElementById('dashboardHeroSub'))
+                    document.getElementById('dashboardHeroSub').value = savedHeroSub;
+            }
+
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // Initialize admin panel state
+            renderAdminLists();
+
+            // Close admin panel on overlay click
+            document.getElementById('adminOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeAdminPanel();
+            });
+
+            // Keyboard shortcut for admin
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'a' && e.ctrlKey && e.shiftKey) {
+                    e.preventDefault();
+                    openAdminPanel();
+                }
+                if (e.key === 'Escape' && deepFocusActive) {
+                    toggleDeepFocus();
+                }
+            });
+
+            console.log('🧘 FOCUSZEN — Enter Deep Focus. Escape Distraction.');
+            console.log('🔑 Admin panel: Press Ctrl+Shift+A or click 🔑 in nav');
+            console.log('💡 Default admin password: focuszen2026');
+            console.log('✨ All systems operational. Neo-brutalist productivity universe ready.');
+        })();
+    </script>
+</body>
+</html>
